@@ -1,9 +1,9 @@
 #!/usr/bin/python
-#Nyarlko's Remote Terminal Telegram Access Tool
+#Ny4rlk0's Remote Terminal Telegram Access Tool
 #Programı ben yazmış olabilirim ama kullananlara hiçbir şekilde garanti vermemekteyim.
 #Tamamiyle kendi sorumluluğunuzla kullanın.
-#Nyarlko hiçbir sorumluluk kabul etmemektedir.
-#Nyarlko does not accept any kind of liability from this program. Use it at your own risk!
+#Ny4rlk0 hiçbir sorumluluk kabul etmemektedir.
+#Ny4rlk0 does not accept any kind of liability from this program. Use it at your own risk!
 import telepot,telepot.loop,telepot.namedtuple
 import sqlite3,threading,os,time,pprint,random,validators,base64,json,subprocess
 import configparser as c
