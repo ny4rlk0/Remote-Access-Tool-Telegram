@@ -1,5 +1,9 @@
 # Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram
 
+Botfather ile bot oluşturun ve toxeninizi bilgisayarınıza kaydedin.
+
+Create new bot from botfather and save your toxen to your computer.
+
 Gereklilikleri:
 pip install validators, telepot, Pillow, Requests
 Yazarak yükleyin.
