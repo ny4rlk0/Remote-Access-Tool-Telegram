@@ -17,7 +17,7 @@ import socket
 nya=0
 rlko=0
 lang="tr" #For english type en. Türkçe için tr yazın.
-ROOT_ACCESS=[972561465] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.'
+ROOT_ACCESS=[972561465] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
 xTOXEN="12341321:DA2doSKDWAD232SD2sDW23S" #Add your own toxen here. Buraya kendi toxeninizi yazın.
 db_exists=os.path.exists("database.db")
 conn=sqlite3.connect("database.db", check_same_thread=False)
