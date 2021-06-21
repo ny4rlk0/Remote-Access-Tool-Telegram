@@ -4,6 +4,7 @@
 #Tamamiyle kendi sorumluluğunuzla kullanın.
 #Ny4rlk0 hiçbir sorumluluk kabul etmemektedir.
 #Ny4rlk0 does not accept any kind of liability from this program. Use it at your own risk!
+#BTC: 3NhGAPpkLas1pDdPp7tSeP5ba1gHapq7kb
 import telepot,telepot.loop,telepot.namedtuple
 import sqlite3,threading,os,time,pprint,random,validators,base64,json,subprocess
 import configparser as c
