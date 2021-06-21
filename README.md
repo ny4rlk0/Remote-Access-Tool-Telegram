@@ -8,7 +8,7 @@ Yazarak yükleyin.
 pip install validators, telepot, Pillow, Requests
 
 
-ROOT_ACCESS=[972561465] #Let'secure our access to computer with Telegram user id. Buraya telegram id nizi girin.
+ROOT_ACCESS=[972561465] #Add your Telegram user id here. Buraya telegram id nizi girin.
 xTOXEN="12341321:DA2doSKDWAD232SD2sDW23S" #Add your own toxen here. Buraya kendi toxeninizi yazın.
 
 Windows terminali için Uzaktan erişim aracı. 
