@@ -77,8 +77,8 @@ def download(url,filename):
     try:
         r = rq.get(url, allow_redirects=True)
         open(filename, 'wb').write(r.content)
-    except Exception as ex:
-        print(ex)
+    except:
+        pass
 def handle(msg):
    try:
     pprint.pprint(msg)
