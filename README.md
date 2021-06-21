@@ -41,3 +41,6 @@ Commands:
 /userid Will show your User ID number.
 
 You can see help with /help.
+If you want bot to run English change
+lang="en" #For english type en.
+at top.
