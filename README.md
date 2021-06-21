@@ -1,4 +1,4 @@
-# Uzaktan-Erisim-Araci-Remote-Access-Tool
+# Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram
 
 Gereklilikleri:
 pip install validators, telepot, Pillow, Requests
