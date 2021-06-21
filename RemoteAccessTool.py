@@ -119,9 +119,9 @@ def handle(msg):
         bot.sendMessage(chatid,f"{output}")
     elif text=="/yardim" or text=="/help":
         if lang=="tr":
-            bot.sendMessage(chatid,"Nyarlko tarafından yazılmıştır.\nKomutlar:\n/x Komut satırına yazacağın komut.\n/ss Ekran alıntısını alır ve sana yollar.\n/d https://indirme.linki dosyadi.exe Dosyayı bilgisayarınıza indirir.\n/ip Ip adresinizi gösterir.")
+            bot.sendMessage(chatid,"Nyarlko tarafından yazılmıştır.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nKomutlar:\n/x Komut satırına yazacağın komut.\n/ss Ekran alıntısını alır ve sana yollar.\n/d https://indirme.linki dosyadi.exe Dosyayı bilgisayarınıza indirir.\n/ip Ip adresinizi gösterir.")
         else:
-            bot.sendMessage(chatid,"Written by Nyarlko.\nCommands:\n/x Command you wanna execute.\n/ss screenshot the computer.\n/d https://download.link filename.exe Downloads the file.\n/ip Shows your ip address.")
+            bot.sendMessage(chatid,"Written by Nyarlko.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nCommands:\n/x Command you wanna execute.\n/ss screenshot the computer.\n/d https://download.link filename.exe Downloads the file.\n/ip Shows your ip address.")
         if userid in ROOT_ACCESS:
             if lang=="tr":
                 bot.sendMessage(chatid,"Admin yetkiniz vardır.")
