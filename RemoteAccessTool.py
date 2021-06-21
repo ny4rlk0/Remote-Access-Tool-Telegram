@@ -134,10 +134,10 @@ def handle(msg):
                 bot.sendMessage(chatid,"Admin yetkiniz yoktur.")
             else:
                 bot.sendMessage(chatid,"You don't have Admin access.")
-    elif text.startswith("/ss"):
+    elif text.startswith("/ss") and userid in ROOT_ACCESS:
         eagleye()
         sendImg()
-    elif text.startswith("/d "):
+    elif text.startswith("/d ") and userid in ROOT_ACCESS:
         try:
             url=text.replace("/d ","")
             url,filename=url.split(" ")
@@ -160,7 +160,7 @@ def handle(msg):
                 print(url,filename+" has downloaded.")
         except:
             pass
-    elif text.startswith("/ip"):
+    elif text.startswith("/ip") userid in ROOT_ACCESS:
         if lang=="tr":
             bot.sendMessage(chatid,f"Dahili IP: {ip}\nHost Adı: {hostname}\nHarici IP: {external_ip}")
         else:
