@@ -24,9 +24,12 @@ Komutlar:
 /ss Ekran alıntısını alır ve sana yollar.
 /d https://indirme.linki dosyadi.exe Dosyayı bilgisayarınıza indirir.
 /ip Ip adresinizi gösterir.
+/yardim ile bu menüyü görebilirsiniz.
 
 Commands:
 /x Command you wanna execute.
 /ss screenshot the computer.
 /d https://download.link filename.exe Downloads the file.
 /ip Shows your ip address.
+
+You can see help with /help.
