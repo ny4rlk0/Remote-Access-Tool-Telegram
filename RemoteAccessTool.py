@@ -22,7 +22,7 @@ import numpy as np
 nya=0
 rlko=0
 lang="tr" #For english type en. Türkçe için tr yazın.
-ROOT_ACCESS=[954672467] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
+ROOT_ACCESS=[934124953] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
 xTOXEN="12341321:DA2doSKDWAD232SD2sDW23S" #Add your own toxen here. Buraya kendi toxeninizi yazın.
 db_exists=os.path.exists("database.db")
 conn=sqlite3.connect("database.db", check_same_thread=False)
@@ -169,7 +169,7 @@ def handle(msg):
         bot.sendMessage(chatid,f"{output}")
     elif text.startswith("/userid"):
         if lang=="tr":
-            bot.sendMessage(chatid,f"Sizin User ID'niz': {userid}\nBu bilgiyi kimse ile paylaşmayınız.")
+            bot.sendMessage(chatid,f"Sizin User ID'niz: {userid}\nBu bilgiyi kimse ile paylaşmayınız.")
         else:
             bot.sendMessage(chatid,f"Your User ID is: {userid}\nDo not share this information to anyone.")
     elif text=="/yardim" or text=="/help" or text=="/menu" or text=="/menü":
