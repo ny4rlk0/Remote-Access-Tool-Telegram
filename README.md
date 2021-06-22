@@ -44,6 +44,8 @@ Komutlar:
 Uyarı: Kayıt yaparken Windows altta mikrofon simgesi çıkarıyor.
 Kayıt dosyaları Windowsda düzgün oynatılıyor.
 /menu menü'yü gösterir.
+/up C:/a.txt dosyasını telegrama yükler.
+Dikkat: 50 MB üstü dosyaları yükleyemezsiniz.
 
 Commands:
 /x Command you wanna execute.
@@ -55,6 +57,8 @@ Commands:
 Warning: Windows shows microphone icon at taskbar.
 File is playing on windows fine.
 /menu will show menu.
+/up C:/a.txt uploads a.txt to telegram.
+Warning: You can not upload files bigger than 50 MB.
 
 You can see help with /help.
 If you want bot to run English change
