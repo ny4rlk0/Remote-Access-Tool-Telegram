@@ -32,6 +32,9 @@ Komutlar:
 /ip Ip adresinizi gösterir.
 /yardim ile bu menüyü görebilirsiniz.
 /userid User ID numaranızı gösterir.
+/rec 1-120 Saniye cinsinden bilgisayara bağlı mikrofon ile kayıt yapar.
+Uyarı: Kayıt yaparken Windows altta mikrofon simgesi çıkarıyor.
+Kayıt dosyaları Windowsda düzgün oynatılıyor.
 
 Commands:
 /x Command you wanna execute.
@@ -39,6 +42,9 @@ Commands:
 /d https://download.link filename.exe Downloads the file.
 /ip Shows your ip address.
 /userid Will show your User ID number.
+/rec 1-120 (Sec) Will record from computers microphone and send you as wav file.
+Warning: Windows shows microphone icon at taskbar.
+File is playing on windows fine.
 
 You can see help with /help.
 If you want bot to run English change
