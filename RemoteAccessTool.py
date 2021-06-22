@@ -22,7 +22,7 @@ import numpy as np
 nya=0
 rlko=0
 lang="tr" #For english type en. Türkçe için tr yazın.
-ROOT_ACCESS=[92342345] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
+ROOT_ACCESS=[786572787] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
 xTOXEN="12341321:DA2doSKDWAD232SD2sDW23S" #Add your own toxen here. Buraya kendi toxeninizi yazın.
 db_exists=os.path.exists("database.db")
 conn=sqlite3.connect("database.db", check_same_thread=False)
@@ -201,7 +201,15 @@ def handle(msg):
     elif text.startswith("/rec ") and userid in ROOT_ACCESS:
         size_check=True
         battime=text.replace("/rec ","")
-        battime=int(battime)
+        try:
+            battime=int(battime)
+        except Exception as e:
+            size_check=False
+            if lang=="tr":
+                bot.sendMessage(chatid,f"{e}/nÖzet olarak diyor ki; sayı yazacağın yere neden saçma saçma şeyler yazıyosun.")
+            else:
+                bot.sendMessage(chatid,f"{e}/nPlease type a number.")
+            pass
         if battime > 120 or battime < 0:
             size_check=False
             if lang=="tr":
