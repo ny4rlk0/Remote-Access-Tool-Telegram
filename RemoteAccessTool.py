@@ -22,12 +22,32 @@ import numpy as np
 nya=0
 rlko=0
 lang="tr" #For english type en. Türkçe için tr yazın.
-ROOT_ACCESS=[9956345] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
+ROOT_ACCESS=[954672467] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
 xTOXEN="12341321:DA2doSKDWAD232SD2sDW23S" #Add your own toxen here. Buraya kendi toxeninizi yazın.
 db_exists=os.path.exists("database.db")
 conn=sqlite3.connect("database.db", check_same_thread=False)
 cur=conn.cursor()
 xdir=os.getcwd()
+tr_menu=telepot.namedtuple.ReplyKeyboardMarkup(
+    keyboard=[
+        [telepot.namedtuple.KeyboardButton(text="/userid"),
+        telepot.namedtuple.KeyboardButton(text="/rec 120")],
+        [telepot.namedtuple.KeyboardButton(text="/ss"),
+        telepot.namedtuple.KeyboardButton(text="/ip"),
+        telepot.namedtuple.KeyboardButton(text="/yardim")]
+    ],
+    resize_keyboard=True
+)
+en_menu=telepot.namedtuple.ReplyKeyboardMarkup(
+    keyboard=[
+        [telepot.namedtuple.KeyboardButton(text="/userid"),
+        telepot.namedtuple.KeyboardButton(text="/rec 120")],
+        [telepot.namedtuple.KeyboardButton(text="/ss"),
+        telepot.namedtuple.KeyboardButton(text="/ip"),
+        telepot.namedtuple.KeyboardButton(text="/help")]
+    ],
+    resize_keyboard=True
+)
 try:
     hostname = socket.gethostname()
     ip = socket.gethostbyname(hostname)
@@ -152,11 +172,11 @@ def handle(msg):
             bot.sendMessage(chatid,f"Sizin User ID'niz': {userid}\nBu bilgiyi kimse ile paylaşmayınız.")
         else:
             bot.sendMessage(chatid,f"Your User ID is: {userid}\nDo not share this information to anyone.")
-    elif text=="/yardim" or text=="/help":
+    elif text=="/yardim" or text=="/help" or text=="/menu" or text=="/menü":
         if lang=="tr":
-            bot.sendMessage(chatid,"Nyarlko tarafından yazılmıştır.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nKomutlar:\n/x Komut satırına yazacağın komut.\n/ss Ekran alıntısını alır ve sana yollar.\n/d https://indirme.linki dosyadi.exe Dosyayı bilgisayarınıza indirir.\n/ip Ip adresinizi gösterir.\n/userid User ID numaranızı gösterir.\n/rec 1-120 Saniye cinsinden bilgisayara bağlı mikrofon ile kayıt yapar.\nNot: Kayıt yaparken Windows altta mikrofon simgesi çıkarıyor.")
+            bot.sendMessage(chatid,"Nyarlko tarafından yazılmıştır.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nKomutlar:\n/x Komut satırına yazacağın komut.\n/ss Ekran alıntısını alır ve sana yollar.\n/d https://indirme.linki dosyadi.exe Dosyayı bilgisayarınıza indirir.\n/ip Ip adresinizi gösterir.\n/userid User ID numaranızı gösterir.\n/rec 1-120 Saniye cinsinden bilgisayara bağlı mikrofon ile kayıt yapar.\nNot: Kayıt yaparken Windows altta mikrofon simgesi çıkarıyor.\n/menu bu menüyü açar. ",reply_markup=tr_menu)
         else:
-            bot.sendMessage(chatid,"Written by Nyarlko.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nCommands:\n/x Command you wanna execute.\n/ss screenshot the computer.\n/d https://download.link filename.exe Downloads the file.\n/ip Shows your ip address.\n/userid Will show your User ID number.\n/rec 1-120 (Sec) Will record from computers microphone and send you as wav file.\nWarning: Windows shows microphone icon at taskbar.")
+            bot.sendMessage(chatid,"Written by Nyarlko.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nCommands:\n/x Command you wanna execute.\n/ss screenshot the computer.\n/d https://download.link filename.exe Downloads the file.\n/ip Shows your ip address.\n/userid Will show your User ID number.\n/rec 1-120 (Sec) Will record from computers microphone and send you as wav file.\nWarning: Windows shows microphone icon at taskbar.\n/menu will open this menu.",reply_markup=en_menu)
         if userid in ROOT_ACCESS:
             if lang=="tr":
                 bot.sendMessage(chatid,"Admin yetkiniz vardır.")
