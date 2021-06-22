@@ -2,8 +2,8 @@
 #Ny4rlk0's Remote Terminal Telegram Access Tool
 #Programı ben yazmış olabilirim ama kullananlara hiçbir şekilde garanti vermemekteyim.
 #Tamamiyle kendi sorumluluğunuzla kullanın.
-#Ny4rlk0 hiçbir sorumluluk kabul etmemektedir.
-#Ny4rlk0 does not accept any kind of liability from this program. Use it at your own risk!
+#Ny4rlk0 hiçbir yasal sorumluluk kabul etmemektedir.
+#Ny4rlk0 does not accept any kind of legal liability from this program. Use it at your own risk!
 #https://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/
 #BTC: 3NhGAPpkLas1pDdPp7tSeP5ba1gHapq7kb
 import telepot,telepot.loop,telepot.namedtuple
