@@ -202,7 +202,7 @@ def handle(msg):
         size_check=True
         battime=text.replace("/rec ","")
         battime=int(battime)
-        if battime < 120 or battime > 0:
+        if battime < 120 or battime < 0:
             size_check=False
             if lang=="tr":
                 bot.sendMessage(chatid,f"120 saniyeden fazla ses kaydı yapamazsınız.")
