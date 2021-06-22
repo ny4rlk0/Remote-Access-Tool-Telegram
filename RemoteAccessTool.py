@@ -22,7 +22,7 @@ import numpy as np
 nya=0
 rlko=0
 lang="tr" #For english type en. Türkçe için tr yazın.
-ROOT_ACCESS=[956284394] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
+ROOT_ACCESS=[934124953] #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
 xTOXEN="12341321:DA2doSKDWAD232SD2sDW23S" #Add your own toxen here. Buraya kendi toxeninizi yazın.
 db_exists=os.path.exists("database.db")
 conn=sqlite3.connect("database.db", check_same_thread=False)
@@ -252,14 +252,21 @@ def handle(msg):
             pass
     elif text.startswith("/up ") and userid in ROOT_ACCESS:
         file_dir=text.replace("/up ","")
-        file_size=os.path.getsize(file_dir)
-        if file_size <= 50000000: #İf file size smaller then 50 mb since its telegrams bot limit. Dosya boyutu 50 mb küçükse telegramın bot limiti bu üstünü kabul etmiyor.
-            sendFile(file_dir,False)
-        else:
+        try: #Execute. Çalıştır.
+            file_size=os.path.getsize(file_dir)
+        except: #Error. Hata.
             if lang=="tr":
-                bot.sendMessage(chatid,f"Dosya boyutu telegramın botlar için sınırı olan 50 MB'tan büyük!")
+                bot.sendMessage(chatid,"Dosya bulunamadı!")
             else:
-                bot.sendMessage(chatid,f"File size is bigger than 50 MB.\nThis is limitation from telegram for bot api.")
+                bot.sendMessage(chatid,"File not found.")
+        else: #Succesfull. Başarılı.
+            if file_size <= 50000000: #İf file size smaller then 50 mb since its telegrams bot limit. Dosya boyutu 50 mb küçükse telegramın bot limiti bu üstünü kabul etmiyor.
+                sendFile(file_dir,False)
+            else:
+                if lang=="tr":
+                    bot.sendMessage(chatid,f"Dosya boyutu telegramın botlar için sınırı olan 50 MB'tan büyük!")
+                else:
+                    bot.sendMessage(chatid,f"File size is bigger than 50 MB.\nThis is limitation from telegram for bot api.")
    except:
     pass
 if __name__=="__main__":
