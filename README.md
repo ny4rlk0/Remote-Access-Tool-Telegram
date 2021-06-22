@@ -4,6 +4,14 @@ Botfather ile bot oluşturun ve toxeninizi bilgisayarınıza kaydedin.
 
 Create new bot from botfather and save your toxen to your computer.
 
+Grup oluşturun ama username belirtmeyin.
+
+Create a group and do not assign username.
+
+Botunuzu gruba ekleyin ve admin yetkisi verin.
+
+Add your bot to group and give her admin permissions.
+
 Botfatherden kaydettikten sonra toxeni degerler.txt içine yapıştırın. Yoksa yazılımı bir kere açın otomatik oluşacaktır.
 Daha sonrasında botu çalıştırıp telegramdan /userid yazarak onuda öğrenin ve botun içindeki ROOT_ACCESS'in karşısına yazın.
 
