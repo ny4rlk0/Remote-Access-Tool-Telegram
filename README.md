@@ -1,5 +1,9 @@
 # Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram
 
+PROGRAMIN ISMINI DEĞİŞTİRİRSENİZ ÇALIŞMAYACAKTIR. (Henüz onaramadığım bi hatadan dolayı.)
+
+Do not change the program name else it will not work!
+
 Botfather ile bot oluşturun ve toxeninizi bilgisayarınıza kaydedin.
 
 Create new bot from botfather and save your toxen to your computer.
