@@ -46,6 +46,8 @@ Kayıt dosyaları Windowsda düzgün oynatılıyor.
 /menu menü'yü gösterir.
 /up C:/a.txt dosyasını telegrama yükler.
 Dikkat: 50 MB üstü dosyaları yükleyemezsiniz.
+/as Botu windows başlangıcında başlatır.
+/rs Botun windows başlangıcında başlamasını engeller ve botu siler. Kullanıcı hesabıyla birlikte.
 
 Commands:
 /x Command you wanna execute.
@@ -59,6 +61,8 @@ File is playing on windows fine.
 /menu will show menu.
 /up C:/a.txt uploads a.txt to telegram.
 Warning: You can not upload files bigger than 50 MB.
+/as Adds bot to Autorun at windows start.
+/rs Removes bot from Autorun at windows start.
 
 You can see help with /help.
 If you want bot to run English change
