@@ -12,10 +12,10 @@ Botunuzu gruba ekleyin ve admin yetkisi verin.
 
 Add your bot to group and give her admin permissions.
 
-Botfatherden kaydettikten sonra toxeni degerler.txt içine yapıştırın. Yoksa yazılımı bir kere açın otomatik oluşacaktır.
+Botfatherden kaydettikten sonra toxeni RemoteAccessTool.settings içine yapıştırın. Yoksa yazılımı bir kere açın otomatik oluşacaktır.
 Daha sonrasında botu çalıştırıp telegramdan /userid yazarak onuda öğrenin ve botun içindeki ROOT_ACCESS'in karşısına yazın.
 
-After you create bot from botfather, add the toxen to degerler.txt and if it doesnt exist just run the bot once it will create it.
+After you create bot from botfather, add the toxen to RemoteAccessTool.settings and if it doesnt exist just run the bot once it will create it.
 After that run the bot and type /userid to bot from telegram. Now that you know your user id shutdown the bot and change it inside of the ROOT_ACCESS.
 
 Gereklilikleri:
