@@ -49,6 +49,7 @@ Dikkat: 50 MB üstü dosyaları yükleyemezsiniz.
 /as Botu windows başlangıcında başlatır.
 /rs Botun windows başlangıcında başlamasını engeller ve botu siler. Kullanıcı hesabıyla birlikte.
 /cam Webcam takılı ise resim çeker.
+/tr dili Türkçe yapar.
 
 
 Commands:
@@ -66,6 +67,7 @@ Warning: You can not upload files bigger than 50 MB.
 /as Adds bot to Autorun at windows start.
 /rs Removes bot from Autorun at windows start.
 /cam If webcam is connected it will send you a picture.
+/en sets langue to English.
 
 You can see help with /help.
 If you want bot to run English change
