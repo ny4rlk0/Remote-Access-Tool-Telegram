@@ -5,7 +5,7 @@
 #Ny4rlk0 hiçbir yasal sorumluluk kabul etmemektedir.
 #Ny4rlk0 does not accept any kind of legal liability from this program. Use it at your own risk!
 #https://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/
-#BTC: 3NhGAPpkLas1pDdPp7tSeP5ba1gHapq7kb
+#Added language change support by typing /en /tr  14/12/2021
 import telepot,telepot.loop,telepot.namedtuple
 import sqlite3,threading,os,time,random,validators,base64,json
 import configparser as c
