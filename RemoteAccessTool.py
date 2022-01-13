@@ -6,7 +6,7 @@
 #Ny4rlk0 does not accept any kind of legal liability from this program. Use it at your own risk!
 #https://github.com/ny4rlk0/Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram/
 #Added language change support by typing /en /tr  14/12/2021
-#Fixed bug where password expiring after 1 month. 13/01/2022
+#Fixed bug where password expired after 1 month. 13/01/2022
 import telepot,telepot.loop,telepot.namedtuple
 import sqlite3,threading,os,time,random,validators,base64,json
 import configparser as c
