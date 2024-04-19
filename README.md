@@ -1,5 +1,7 @@
 # Telegram-ile-Uzaktan-Erisim-Araci-Remote-Access-Tool-with-Telegram
 
+<br><a href="https://github.com/ny4rlk0/Remote-Windows-Administration-Tool">Sıfırdan Kodlanmış Yeni Sürürmü / New Version Writed From Scratch<a/><br>
+
 <br>Botfather ile bot oluşturun ve toxeninizi bilgisayarınıza kaydedin.
 
 <br>Create new bot from botfather and save your toxen to your computer.
